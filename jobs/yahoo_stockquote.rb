@@ -27,7 +27,6 @@ yahoo_stockquote_symbols = [
   'AMZN',
   'MSFT',
   'ORCL',
-  'DELL',
   'CSCO',
   'QCOM',
 ]
@@ -39,7 +38,7 @@ SCHEDULER.every '2s', :first_in => 0 do |job|
 
   #SEE HERE FOR API: http://www.jarloo.com/yahoo_finance/
   http = Net::HTTP.new("download.finance.yahoo.com")
-  response = http.request(Net::HTTP::Get.new("/d/quotes.csv?s=#{s}&f=nsac"))
+  response = http.request(Net::HTTP::Get.new("/d/quotes.csv?s=#{s}&f=nsacber5"))
 
   if response.code != "200"
     puts "yahoo stock quote communication error (status-code: #{response.code})\n#{response.body}"
@@ -55,28 +54,30 @@ SCHEDULER.every '2s', :first_in => 0 do |job|
       symbol = line[1]
       current = line[2].to_f
       change = line[3].to_f
+      bid = line[4].to_f
+      e = line[5]
+      peg = line[6]
 
       # add data to list
       stocklist.push({
         label: name,
-        value: current.round(2)
+        value: current.round(2),
+        e: e,
+        peg: peg 
       })
 
 
       # send single value and change to dashboard
       widgetVarname = "yahoo_stock_quote_" + symbol.gsub(/[^A-Za-z0-9]+/, '_').downcase
-      puts widgetVarname
-      puts name 
       widgetData = {
-        current: current
+        current: current,
       }
       if change != 0.0
         widgetData[:last] = current + change
       end
       
       if defined?(send_event)
-      	puts "SENT"
-        send_event(widgetVarname, widgetData)
+      	send_event(widgetVarname, widgetData)
       else
         print "current: #{symbol} #{current} #{change} #{widgetVarname}\n"
       end
