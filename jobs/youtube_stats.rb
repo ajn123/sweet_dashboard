@@ -5,11 +5,10 @@ require 'uri'
 
 
 
-
 SCHEDULER.every '360m', :first_in => 0 do |job|
 
   API_KEY = ENV["YOUTUBE_API"]
-  
+
   #SEE HERE FOR API: http://www.jarloo.com/yahoo_finance/
   http = Net::HTTP.new("www.googleapis.com", 443)
   http.use_ssl = true
@@ -18,10 +17,8 @@ SCHEDULER.every '360m', :first_in => 0 do |job|
   if response.code != "200"
     puts "Youtube stock quote communication error (status-code: #{response.code})\n#{response.body.to_s}"
   else
-
-    json = JSON.parse(response.body)
-   
- #   puts response[:items].to_s
+    json = JSON.parse(response.body)   
+    #   puts response[:items].to_s
     # send single value and change to dashboard
     widgetVarname = "youtube_subscribers"
     stats = json["items"][0]["statistics"]
@@ -32,7 +29,7 @@ SCHEDULER.every '360m', :first_in => 0 do |job|
     widgetData = { current: subscriber_count }
     if defined?(send_event)
       send_event(widgetVarname, widgetData)
-      send_event("youtube_views", {current: view_count})
+      send_event("youtube_views", { current: view_count })
     end 
   end
 end
