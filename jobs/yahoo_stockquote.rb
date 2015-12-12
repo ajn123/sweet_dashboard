@@ -19,10 +19,10 @@ require 'csv'
 # Symbols of all indizes you want to track
 yahoo_stockquote_symbols = [
   'AAPL',      # will become `yahoo_stock_quote_appl`
-  'GOOG',   # will become `yahoo_stock_quote_sie_ha`
-  'YHOO',      
+  'GOOG',   # will become `yahoo_stock_quote_sie_ha`     
   'FB',        
-  'ZNGA',
+  'IBM',
+  'YHOO',
   'EBAY',
   'AMZN',
   'MSFT',
@@ -31,14 +31,14 @@ yahoo_stockquote_symbols = [
   'QCOM',
 ]
 
-SCHEDULER.every '2s', :first_in => 0 do |job|
+SCHEDULER.every '1m', :first_in => 0 do |job|
 
   s = yahoo_stockquote_symbols.join(',').upcase
  # finance.yahoo.com/d/quotes.csv?s=AAPL+GOOG+MSFT&f=nab
 
   #SEE HERE FOR API: http://www.jarloo.com/yahoo_finance/
   http = Net::HTTP.new("download.finance.yahoo.com")
-  response = http.request(Net::HTTP::Get.new("/d/quotes.csv?s=#{s}&f=nsacber5"))
+  response = http.request(Net::HTTP::Get.new("/d/quotes.csv?s=#{s}&f=nsac1ber5"))
 
   if response.code != "200"
     puts "yahoo stock quote communication error (status-code: #{response.code})\n#{response.body}"
@@ -73,11 +73,12 @@ SCHEDULER.every '2s', :first_in => 0 do |job|
         current: current,
       }
       if change != 0.0
-        widgetData[:last] = current + change
+        widgetData[:last] = change
       end
       
       if defined?(send_event)
       	send_event(widgetVarname, widgetData)
+     #    print "current: #{symbol} #{current} #{change} #{widgetVarname}\n"
       else
         print "current: #{symbol} #{current} #{change} #{widgetVarname}\n"
       end

@@ -1,0 +1,30 @@
+<h1 class="title" data-bind="title"></h1>
+
+<div class="CSSTableGenerator" >
+                <table >
+                    <tr>
+                        <td>
+                            Name
+                        </td>
+                        <td >
+                            Value
+                        </td>
+                        <td>
+                            PEG
+                        </td>
+                        <td>
+                            Earnings
+                        </td>
+                    </tr>
+                    <tr data-foreach-item="items">
+                        <td class="label" data-bind="item.label"></td>
+                        <td class="value" data-bind="item.value"></td>
+                        <td class="value" data-bind="item.peg"></td>
+                        <td class="value" data-bind="item.e"></td>
+                    </tr>
+                </table>
+</div>
+            
+
+<p class="more-info" data-bind="moreinfo"></p>
+<p class="updated-at" data-bind="updatedAtMessage"></p>
