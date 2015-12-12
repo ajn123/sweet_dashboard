@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 gem 'dashing'
 
+gem 'dotenv'
 gem 'sinatra'
 gem 'sinatra_cyclist'
 

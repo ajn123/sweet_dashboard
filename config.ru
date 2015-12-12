@@ -1,5 +1,10 @@
 #require "sinatra/cyclist"
+
+require 'dotenv'
+Dotenv.load
+
 require 'dashing'
+
 
 configure do
   set :auth_token, 'YOUR_AUTH_TOKEN'
@@ -19,6 +24,8 @@ end
 # set :routes_to_cycle_through, [:sample, :life]
 
 run Sinatra::Application
+
+
 
 get "/sample" do
   "sample"
