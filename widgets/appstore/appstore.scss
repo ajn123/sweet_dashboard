@@ -1,0 +1,40 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #999;
+$title-color:       #FFF;
+
+// ----------------------------------------------------------------------------
+// Widget-comment styles
+// ----------------------------------------------------------------------------
+.widget-appstore { 
+
+  background: $background-color url('../assets/apple_logo.png') no-repeat 50% 50%;
+
+  .title {
+    font-weight: bold;
+    color: $title-color;
+    opacity: .9
+  }
+
+  .appstore-rating-container {
+    div > div {
+      font-size: 24px
+    }
+  }
+
+  .appstore-rating-value {
+    font-size: 76px;
+    #appstore-rating-integer-value {
+      font-weight: bold;
+    }
+  }
+
+  .appstore-voters-count {
+    font-size: 1.5em;
+    #appstore-voters-count-value {
+      font-weight: bold
+    }
+  }
+
+}

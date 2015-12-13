@@ -4,14 +4,15 @@ require 'net/https'
 require 'uri'
 
 
-
 SCHEDULER.every '360m', :first_in => 0 do |job|
 
   API_KEY = ENV["YOUTUBE_API"]
 
   #SEE HERE FOR API: http://www.jarloo.com/yahoo_finance/
-  http = Net::HTTP.new("www.googleapis.com", 443)
+  http = Net::HTTP.new("www.googleapis.com", Net::HTTP.https_default_port())
   http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE # disable ssl certificate check
+
   response = http.request(Net::HTTP::Get.new("/youtube/v3/channels?part=statistics&id=UCTtZPn_bD6ekitgbfakcsgg&key=#{API_KEY}"))
 
   if response.code != "200"

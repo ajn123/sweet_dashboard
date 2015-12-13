@@ -9,3 +9,4 @@ gem 'sinatra_cyclist'
 
 ## Remove this if you don't need a twitter widget.
 gem 'nokogiri'
+gem 'htmlentities'
