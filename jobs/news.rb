@@ -6,7 +6,7 @@ require 'htmlentities'
 news_feeds = {
   "bbc-tech" => "http://feeds.bbci.co.uk/news/technology/rss.xml",
   "mashable" => "http://feeds.feedburner.com/Mashable",
-  "techcrunch" => "http://feeds.feedburner.com/TechCrunch/",
+  "techcrunch" => "http://feeds.feedburner.com/TechCrunchTV/Founder-Stories",
   "NYTMoney" => "http://rss.nytimes.com/services/xml/rss/nyt/YourMoney.xml",
   "NYTHome" => "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
 }
@@ -37,17 +37,25 @@ class News
   def latest_headlines()
     news_headlines = []
     open(@feed) do |rss|
-      feed = RSS::Parser.parse(rss)
+      feed = ""
+      begin
+        feed = RSS::Parser.parse(rss)
+      rescue Exception => e
+        puts e.to_s
+        puts "#{widget_id} is messing up."
+        break
+      end
+      
       feed.items.each do |item|
         title = clean_html(item.title.to_s)
         begin
-          summary =  truncate(clean_html(item.description))
+          summary = truncate(clean_html(item.description))
         rescue
           doc = Nokogiri::HTML(item.summary.content)
           summary = truncate((doc.xpath("//text()").remove).to_s)
         end
         #onclick="location.href='http://en.wikipedia.org/wiki/dashing'"
-        link = "location.href='#{item.guid.content}'"
+        link  = "location.href='#{item.guid.content}'"
         news_headlines.push({ title: title, description: summary, onclick: link })
       end
     end
